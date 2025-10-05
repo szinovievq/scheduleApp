@@ -1,0 +1,7 @@
+me.zinoviev.scheduleapp.test.app-core-1.7.0-0 C:\Users\User\.gradle\caches\8.13\transforms\1a97a8ad9239152792200e694f256f9a\transformed\core-1.7.0\res
+me.zinoviev.scheduleapp.test.app-tracing-1.2.0-1 C:\Users\User\.gradle\caches\8.13\transforms\ee6cca6021c21102a4ec17685409d312\transformed\tracing-1.2.0\res
+me.zinoviev.scheduleapp.test.app-androidTest-2 D:\Projects\ScheduleApp\app\build\generated\res\resValues\androidTest\debug
+me.zinoviev.scheduleapp.test.app-updated_navigation_xml-3 D:\Projects\ScheduleApp\app\build\generated\updated_navigation_xml\debugAndroidTest
+me.zinoviev.scheduleapp.test.app-mergeDebugAndroidTestResources-4 D:\Projects\ScheduleApp\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\merged.dir
+me.zinoviev.scheduleapp.test.app-mergeDebugAndroidTestResources-5 D:\Projects\ScheduleApp\app\build\intermediates\incremental\debugAndroidTest\mergeDebugAndroidTestResources\stripped.dir
+me.zinoviev.scheduleapp.test.app-debugAndroidTest-6 D:\Projects\ScheduleApp\app\build\intermediates\merged_res\debugAndroidTest\mergeDebugAndroidTestResources

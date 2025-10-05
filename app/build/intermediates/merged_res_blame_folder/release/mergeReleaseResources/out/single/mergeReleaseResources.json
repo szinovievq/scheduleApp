@@ -1,0 +1,98 @@
+[
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/drawable_item_lesson_background.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/drawable/item_lesson_background.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/drawable_et_search_border.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/drawable/et_search_border.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/drawable_ic_launcher_background.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/layout_activity_main.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/layout/activity_main.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/drawable_item_day_background_selected.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/drawable/item_day_background_selected.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/layout_item_day.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/layout/item_day.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/drawable_item_day_background.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/drawable/item_day_background.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-hdpi_ic_launcher.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-hdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/layout_item_lesson.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/layout/item_lesson.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-xhdpi_ic_launcher.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-xhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/xml_data_extraction_rules.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/mipmap-mdpi_ic_launcher.webp.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/mipmap-mdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/drawable_number_background.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/drawable/number_background.xml"
+    },
+    {
+        "merged": "me.zinoviev.scheduleapp-release-54:/xml_backup_rules.xml.flat",
+        "source": "me.zinoviev.scheduleapp-main-55:/xml/backup_rules.xml"
+    }
+]
