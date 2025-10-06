@@ -1,0 +1,15 @@
+.gradle/
+build/
+
+.kotlin/
+gradle/
+app/build/
+app/release/
+
+.idea/
+*.iml
+local.properties
+
+*.log
+
+/out/
