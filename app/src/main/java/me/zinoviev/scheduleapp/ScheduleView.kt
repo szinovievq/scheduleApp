@@ -1,6 +1,7 @@
 package me.zinoviev.scheduleapp
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
@@ -21,6 +22,7 @@ class ScheduleView(private val activity: AppCompatActivity) {
     private val btnSearch: Button = activity.findViewById(R.id.btnSearch)
     private val containerSchedule: LinearLayout = activity.findViewById(R.id.containerSchedule)
     private val tvInfo: TextView = activity.findViewById(R.id.tvInfo)
+    private val toMap: TextView = activity.findViewById(R.id.toMap)
     private val tvSelectedAuditory: TextView = activity.findViewById(R.id.tvSelectedAuditory)
 
     private val adapter = LessonAdapter(emptyList())
@@ -62,6 +64,10 @@ class ScheduleView(private val activity: AppCompatActivity) {
         }
     }
 
+    fun setupToMapClick(listener: () -> Unit) {
+        toMap.setOnClickListener { listener() }
+    }
+
     fun showScheduleContainer() {
         containerSchedule.visibility = View.VISIBLE
     }
@@ -83,6 +89,14 @@ class ScheduleView(private val activity: AppCompatActivity) {
         rvDays.visibility = View.GONE
     }
 
+    fun showToMapText(){
+        toMap.visibility = View.VISIBLE
+    }
+
+    fun hideToMapText(){
+        toMap.visibility = View.GONE
+    }
+
     fun updateSchedule(items: List<LessonAdapter.LessonItem>) {
         adapter.updateData(items)
     }
@@ -92,6 +106,12 @@ class ScheduleView(private val activity: AppCompatActivity) {
     }
 
     fun setSelectedAuditory(text: String) {
-        tvSelectedAuditory.text = "Аудитория: $text"
+        tvSelectedAuditory.text = "Аудитория: ${text.uppercase()}"
+    }
+
+    fun startMapActivity(url: String) {
+        val intent = Intent(activity, MapActivity::class.java)
+        intent.putExtra("url", url)
+        activity.startActivity(intent)
     }
 }

@@ -25,6 +25,10 @@ class ScheduleController(activity: AppCompatActivity) {
             }
         }
 
+        ui.setupToMapClick {
+            handleToMapClick()
+        }
+
         ui.setupSearchButton { input -> handleSearch(input) }
         ui.showInfoMessage("Расписание не найдено :(")
     }
@@ -38,6 +42,7 @@ class ScheduleController(activity: AppCompatActivity) {
             if (!scheduleShown) {
                 ui.showScheduleContainer()
                 ui.showRvDays()
+                ui.showToMapText()
                 scheduleShown = true
             }
             updateSchedule()
@@ -46,8 +51,15 @@ class ScheduleController(activity: AppCompatActivity) {
             scheduleShown = false
             ui.hideRvDays()
             ui.clearSchedule()
+            ui.hideToMapText()
             ui.showInfoMessage("Аудитория $input не найдена :(")
         }
+    }
+
+    private fun handleToMapClick() {
+        val url = "https://mpunav.ru/?room=$selectedAuditory"
+        if (selectedAuditory == null) { return }
+        ui.startMapActivity(url)
     }
 
     fun updateSchedule() {
@@ -57,6 +69,7 @@ class ScheduleController(activity: AppCompatActivity) {
 
         ui.showScheduleContainer()
         ui.showRvDays()
+        ui.showToMapText()
         ui.updateSchedule(items)
 
         if (items.isEmpty()) {
