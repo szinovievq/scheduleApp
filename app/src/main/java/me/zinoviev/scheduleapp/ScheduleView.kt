@@ -5,6 +5,8 @@ import android.content.Intent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -13,12 +15,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.zinoviev.scheduleapp.adapter.LessonAdapter
+import me.zinoviev.scheduleapp.mapper.AuditoryMapper
 
 class ScheduleView(private val activity: AppCompatActivity) {
 
     private val recyclerView: RecyclerView = activity.findViewById(R.id.recyclerView)
     private val rvDays: RecyclerView = activity.findViewById(R.id.rvDays)
-    private val etAuditory: EditText = activity.findViewById(R.id.etAuditory)
+    private val etAuditory: AutoCompleteTextView = activity.findViewById(R.id.etAuditory)
     private val btnSearch: Button = activity.findViewById(R.id.btnSearch)
     private val containerSchedule: LinearLayout = activity.findViewById(R.id.containerSchedule)
     private val tvInfo: TextView = activity.findViewById(R.id.tvInfo)
@@ -26,6 +29,10 @@ class ScheduleView(private val activity: AppCompatActivity) {
     private val tvSelectedAuditory: TextView = activity.findViewById(R.id.tvSelectedAuditory)
 
     private val adapter = LessonAdapter(emptyList())
+    private val auditoryMapper = AuditoryMapper(activity)
+    private val allAuditories = auditoryMapper.getAllAuditories()
+    private val autoAdapter = ArrayAdapter(activity, R.layout.item_dropdown,
+        R.id.tvItem, allAuditories)
 
     init {
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -33,6 +40,9 @@ class ScheduleView(private val activity: AppCompatActivity) {
         containerSchedule.visibility = View.GONE
         tvInfo.visibility = View.VISIBLE
         tvSelectedAuditory.text = "Аудитория: Не выбрано"
+
+        etAuditory.setDropDownBackgroundResource(R.drawable.bg_dropdown)
+        etAuditory.setAdapter(autoAdapter)
     }
 
     fun setupDays(onDayClick: (String) -> Unit) {

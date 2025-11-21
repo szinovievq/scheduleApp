@@ -15,4 +15,9 @@ class AuditoryMapper(context: Context) {
     fun getAuditoryId(audienceName: String): String? {
         return mapping[audienceName]
     }
+
+    fun getAllAuditories(): List<String> {
+        return mapping.keys.toList()
+    }
+
 }

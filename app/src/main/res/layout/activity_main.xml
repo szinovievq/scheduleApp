@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/etAuditory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -42,8 +42,10 @@
             android:inputType="text"
             android:textColor="@color/gray"
             android:textColorHint="@color/gray"
+            android:background="@drawable/et_search_border"
             android:padding="8dp"
-            android:background="@drawable/et_search_border" />
+            android:completionThreshold="1"
+            android:dropDownVerticalOffset="0dp"/>
 
         <Button
             android:id="@+id/btnSearch"
