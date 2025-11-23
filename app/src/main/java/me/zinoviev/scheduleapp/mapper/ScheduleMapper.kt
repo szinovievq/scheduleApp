@@ -1,15 +1,16 @@
 package me.zinoviev.scheduleapp.mapper
 
 import android.content.Context
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
+import android.os.Build
+import androidx.annotation.RequiresApi
+import kotlinx.serialization.json.*
 import me.zinoviev.scheduleapp.model.Auditory
 import me.zinoviev.scheduleapp.model.Lesson
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class ScheduleMapper(context: Context) {
+
     private val auditories: Map<String, Auditory>
 
     init {
@@ -20,28 +21,44 @@ class ScheduleMapper(context: Context) {
         auditories = json.mapValues { (audId, audData) ->
             val raspJson = audData.jsonObject["rasp"]?.jsonObject ?: JsonObject(emptyMap())
             val rasp = raspJson.mapValues { (_, dayData) ->
-                dayData.jsonObject.filterKeys { it != "lessons" }
+                val dayObj = dayData.asJsonObjectOrNull() ?: JsonObject(emptyMap())
+                dayObj.mapValues { (_, lessonArray) ->
+                    lessonArray.jsonArray.filterNot { it is JsonNull }
+                }
             }
-            Auditory(id = audId, rasp = rasp as Map<String, Map<String, JsonObject>>)
+            Auditory(id = audId, rasp = rasp)
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getLessons(auditoryId: String, day: String): List<Lesson> {
         val auditory = auditories[auditoryId] ?: return emptyList()
         val dayLessons = auditory.rasp[day] ?: return emptyList()
 
-        return dayLessons.map { (lessonNumber, lessonData) ->
-            val discipline = lessonData["discipline"]?.jsonPrimitive?.content.orEmpty()
-            val teachers = lessonData["teachers"]?.jsonArray?.map { it.jsonPrimitive.content } ?: emptyList()
-            val groupNames = lessonData["groupNames"]?.jsonArray?.map { it.jsonPrimitive.content } ?: emptyList()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-            Lesson(
-                number = lessonNumber,
-                discipline = discipline,
-                teachers = teachers,
-                groupNames = groupNames
-            )
+        return dayLessons.flatMap { (lessonNumber, lessonsList) ->
+            lessonsList.mapNotNull { lessonData ->
+
+                val lessonObj = lessonData.asJsonObjectOrNull() ?: return@mapNotNull null
+                val discipline = lessonObj["discipline"]?.jsonPrimitive?.content.orEmpty()
+                val teachers = lessonObj["teachers"]?.jsonArray?.map { it.jsonPrimitive.content } ?: emptyList()
+                val groupNames = lessonObj["groupNames"]?.jsonArray?.map { it.jsonPrimitive.content } ?: emptyList()
+                val dt = lessonObj["dt"]?.jsonPrimitive?.content?.let { LocalDate.parse(it, formatter) }
+                val df = lessonObj["df"]?.jsonPrimitive?.content?.let { LocalDate.parse(it, formatter) }
+                val dts = lessonObj["dts"]?.jsonPrimitive?.content.orEmpty()
+
+                Lesson(
+                    number = lessonNumber,
+                    discipline = discipline,
+                    teachers = teachers,
+                    groupNames = groupNames,
+                    dt = dt,
+                    df = df,
+                    dts = dts
+                )
+            }
         }.sortedBy { it.number.toIntOrNull() ?: 0 }
     }
-
+    private fun JsonElement.asJsonObjectOrNull(): JsonObject? = this as? JsonObject
 }
