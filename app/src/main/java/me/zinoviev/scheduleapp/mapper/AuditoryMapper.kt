@@ -20,4 +20,8 @@ class AuditoryMapper(context: Context) {
         return mapping.keys.toList()
     }
 
+    fun getAuditoryNameById(id: String): String {
+        return mapping.entries.firstOrNull { it.value == id }?.key ?: id
+    }
+
 }

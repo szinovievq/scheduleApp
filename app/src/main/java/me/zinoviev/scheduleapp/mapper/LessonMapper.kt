@@ -16,6 +16,7 @@ class LessonMapper {
             LessonAdapter.LessonItem(
                 lessonNumber = number,
                 group = group,
+                auditory = lesson.auditoryId,
                 time = time,
                 lesson = subject,
                 teacher = teacher

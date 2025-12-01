@@ -9,7 +9,16 @@ import me.zinoviev.scheduleapp.mapper.LessonMapper
 import me.zinoviev.scheduleapp.mapper.ScheduleMapper
 import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 class ScheduleController(activity: AppCompatActivity) {
+
+    enum class SearchType {
+        AUDITORY,
+        GROUP
+    }
+
+    private var searchType: SearchType = SearchType.AUDITORY
+    private var selectedGroup: String? = null
 
     private val ui = ScheduleView(activity)
     private val scheduleMapper = ScheduleMapper(activity)
@@ -20,10 +29,9 @@ class ScheduleController(activity: AppCompatActivity) {
     var selectedDay: String = "monday"
     private var scheduleShown = false
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun initialize() {
         ui.setupDays { dayKey ->
-            if (selectedAuditory != null) {
+            if (selectedAuditory != null || selectedGroup != null) {
                 selectedDay = dayKey
                 updateSchedule()
             }
@@ -38,28 +46,34 @@ class ScheduleController(activity: AppCompatActivity) {
         ui.showInfoMessage("Расписание не найдено :(")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun handleSearch(input: String) {
-        val auditoryId = auditoryMapper.getAuditoryId(input.lowercase())
-        ui.setSelectedAuditory(input)
+        val lowerInput = input.lowercase()
+        val auditoryId = auditoryMapper.getAuditoryId(lowerInput)
 
         if (auditoryId != null) {
+            searchType = SearchType.AUDITORY
             selectedAuditory = auditoryId
-            if (!scheduleShown) {
-                ui.showScheduleContainer()
-                ui.showRvDays()
-                ui.showToMapText()
-                scheduleShown = true
-            }
-            updateSchedule()
+            selectedGroup = null
+            ui.showToMapText()
+            ui.setSelected(input, false)
+            ui.updateAdapterShowAuditory(false)
         } else {
+            searchType = SearchType.GROUP
+            selectedGroup = input
             selectedAuditory = null
-            scheduleShown = false
-            ui.hideRvDays()
-            ui.clearSchedule()
             ui.hideToMapText()
-            ui.showInfoMessage("Аудитория $input не найдена :(")
+            ui.setSelected(input, true)
+            ui.updateAdapterShowAuditory(true)
         }
+
+        if (!scheduleShown) {
+            ui.showScheduleContainer()
+            ui.showRvDays()
+            ui.showToMapText()
+            scheduleShown = true
+        }
+
+        updateSchedule()
     }
 
     private fun handleToMapClick() {
@@ -68,10 +82,21 @@ class ScheduleController(activity: AppCompatActivity) {
         ui.startMapActivity(url)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun updateSchedule() {
-        val audience = selectedAuditory ?: return
-        val lessons = scheduleMapper.getLessons(audience, selectedDay)
+
+        val lessons = when (searchType) {
+
+            SearchType.AUDITORY -> {
+                val audience = selectedAuditory ?: return
+                scheduleMapper.getLessons(audience, selectedDay)
+            }
+
+            SearchType.GROUP -> {
+                val group = selectedGroup ?: return
+                scheduleMapper.getLessonsByGroup(group, selectedDay)
+            }
+        }
 
         val today = LocalDate.now()
 
@@ -89,8 +114,13 @@ class ScheduleController(activity: AppCompatActivity) {
 
         ui.showScheduleContainer()
         ui.showRvDays()
-        ui.showToMapText()
         ui.updateSchedule(items)
+
+        if (searchType == SearchType.AUDITORY) {
+            ui.showToMapText()
+        } else {
+            ui.hideToMapText()
+        }
 
         if (items.isEmpty()) {
             ui.showInfoMessage("В этот день занятий нет!")

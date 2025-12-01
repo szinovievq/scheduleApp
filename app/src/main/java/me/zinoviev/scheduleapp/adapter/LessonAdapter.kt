@@ -6,12 +6,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import me.zinoviev.scheduleapp.R
+import me.zinoviev.scheduleapp.mapper.AuditoryMapper
 
-class LessonAdapter(private var items: List<LessonItem>)
-    : RecyclerView.Adapter<LessonAdapter.VH>() {
+class LessonAdapter(
+    private var items: List<LessonItem>,
+    var showAuditoryInsteadOfGroup: Boolean = false,
+) : RecyclerView.Adapter<LessonAdapter.VH>() {
 
-    data class LessonItem(val lessonNumber: String, val group: String,
-                          val time: String, val lesson: String, val teacher: String)
+    private lateinit var auditoryMapper: AuditoryMapper
+
+    data class LessonItem(
+        val lessonNumber: String,
+        val group: String,
+        val auditory: String,
+        val time: String,
+        val lesson: String,
+        val teacher: String
+    )
 
     inner class VH(view: View) : RecyclerView.ViewHolder(view) {
         val tvLessonNumber: TextView = view.findViewById(R.id.tvLessonNumber)
@@ -22,7 +33,11 @@ class LessonAdapter(private var items: List<LessonItem>)
 
         fun bind(item: LessonItem) {
             tvLessonNumber.text = item.lessonNumber
-            tvGroup.text = item.group
+            tvGroup.text = if (showAuditoryInsteadOfGroup) {
+                auditoryMapper.getAuditoryNameById(item.auditory).uppercase()
+            } else {
+                item.group.uppercase()
+            }
             tvTime.text = item.time
             tvSubject.text = item.lesson
             tvTeacher.text = item.teacher
@@ -30,6 +45,9 @@ class LessonAdapter(private var items: List<LessonItem>)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
+        if (!::auditoryMapper.isInitialized) {
+            auditoryMapper = AuditoryMapper(parent.context)
+        }
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_lesson, parent, false)
         return VH(v)

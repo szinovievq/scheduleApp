@@ -9,5 +9,6 @@ data class Lesson(
     val groupNames: List<String>,
     val dt: LocalDate?,
     val df: LocalDate?,
-    val dts: String = ""
+    val dts: String = "",
+    val auditoryId: String = ""
 )

@@ -1,22 +1,26 @@
 package me.zinoviev.scheduleapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import me.zinoviev.scheduleapp.adapter.LessonAdapter
 import me.zinoviev.scheduleapp.mapper.AuditoryMapper
+import me.zinoviev.scheduleapp.mapper.ScheduleMapper
 
+@RequiresApi(Build.VERSION_CODES.O)
 class ScheduleView(private val activity: AppCompatActivity) {
 
     private val recyclerView: RecyclerView = activity.findViewById(R.id.recyclerView)
@@ -28,11 +32,19 @@ class ScheduleView(private val activity: AppCompatActivity) {
     private val toMap: TextView = activity.findViewById(R.id.toMap)
     private val tvSelectedAuditory: TextView = activity.findViewById(R.id.tvSelectedAuditory)
 
-    private val adapter = LessonAdapter(emptyList())
+    private val adapter = LessonAdapter(emptyList(), showAuditoryInsteadOfGroup = false)
     private val auditoryMapper = AuditoryMapper(activity)
+    private val scheduleMapper = ScheduleMapper(activity);
     private val allAuditories = auditoryMapper.getAllAuditories()
-    private val autoAdapter = ArrayAdapter(activity, R.layout.item_dropdown,
-        R.id.tvItem, allAuditories)
+
+    private val allGroups = scheduleMapper.getAllGroups()
+    private val allItems = (allAuditories + allGroups).distinct().sorted()
+    val autoAdapter = ArrayAdapter(
+        activity,
+        R.layout.item_dropdown,
+        R.id.tvItem,
+        allItems
+    )
 
     init {
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -111,12 +123,20 @@ class ScheduleView(private val activity: AppCompatActivity) {
         adapter.updateData(items)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateAdapterShowAuditory(show: Boolean) {
+        adapter.showAuditoryInsteadOfGroup = show
+        adapter.notifyDataSetChanged()
+    }
+
     fun clearSchedule() {
         adapter.updateData(emptyList())
     }
 
-    fun setSelectedAuditory(text: String) {
-        tvSelectedAuditory.text = "Аудитория: ${text.uppercase()}"
+    fun setSelected(text: String, isGroup: Boolean) {
+        tvSelectedAuditory.text =
+            if (isGroup) "Группа: ${text.uppercase()}"
+            else "Аудитория: ${text.uppercase()}"
     }
 
     fun startMapActivity(url: String) {

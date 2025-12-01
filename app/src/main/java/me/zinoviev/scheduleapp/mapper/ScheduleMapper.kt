@@ -9,7 +9,8 @@ import me.zinoviev.scheduleapp.model.Lesson
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ScheduleMapper(context: Context) {
+
+class ScheduleMapper(private val context: Context) {
 
     private val auditories: Map<String, Auditory>
 
@@ -55,10 +56,69 @@ class ScheduleMapper(context: Context) {
                     groupNames = groupNames,
                     dt = dt,
                     df = df,
-                    dts = dts
+                    dts = dts,
+                    auditoryId = auditoryId
                 )
             }
         }.sortedBy { it.number.toIntOrNull() ?: 0 }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getLessonsByGroup(group: String, day: String): List<Lesson> {
+
+        val result = mutableListOf<Lesson>()
+        val auditoryMapper = AuditoryMapper(context)
+
+        for (auditoryName in auditoryMapper.getAllAuditories()) {
+
+            val auditoryId = auditoryMapper.getAuditoryId(auditoryName) ?: continue
+
+            val lessons = getLessons(auditoryId, day)
+
+            lessons.forEach { lesson ->
+
+                if (lesson.groupNames.any { it.equals(group, ignoreCase = true) }) {
+
+                    val isAlreadyAdded = result.any { existing ->
+                        existing.number == lesson.number &&
+                                existing.discipline == lesson.discipline &&
+                                existing.teachers == lesson.teachers
+                    }
+
+                    if (!isAlreadyAdded) {
+                        result.add(lesson)
+                    }
+                }
+            }
+        }
+
+        return result.sortedBy { it.number.toIntOrNull() ?: 0 }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getAllGroups(): List<String> {
+        val groups = mutableSetOf<String>()
+
+        for (auditory in auditories.values) {
+            for (day in auditory.rasp.values) {
+                for (lessonsList in day.values) {
+                    for (lessonData in lessonsList) {
+
+                        val lessonObj = lessonData.asJsonObjectOrNull() ?: continue
+
+                        val groupNames = lessonObj["groupNames"]
+                            ?.jsonArray
+                            ?.map { it.jsonPrimitive.content }
+                            ?: emptyList()
+
+                        groups.addAll(groupNames)
+                    }
+                }
+            }
+        }
+
+        return groups.sorted()
+    }
+
     private fun JsonElement.asJsonObjectOrNull(): JsonObject? = this as? JsonObject
 }
