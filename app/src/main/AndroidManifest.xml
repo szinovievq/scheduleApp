@@ -14,9 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.ScheduleApp">
         <activity
-            android:name=".CalendarActivity"
-            android:exported="false" />
-        <activity
             android:name=".MapActivity"
             android:exported="false"
             android:label="@string/title_activity_map"
@@ -31,6 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
     </application>
 
 </manifest>

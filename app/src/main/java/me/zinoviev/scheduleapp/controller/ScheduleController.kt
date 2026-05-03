@@ -3,7 +3,6 @@ package me.zinoviev.scheduleapp.controller
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import me.zinoviev.scheduleapp.CalendarActivity
 import me.zinoviev.scheduleapp.ScheduleView
 import me.zinoviev.scheduleapp.mapper.AuditoryMapper
 import me.zinoviev.scheduleapp.mapper.LessonMapper
@@ -11,7 +10,7 @@ import me.zinoviev.scheduleapp.mapper.ScheduleMapper
 import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
-class ScheduleController(private val activity: AppCompatActivity) {
+class ScheduleController(activity: AppCompatActivity) {
 
     enum class SearchType {
         AUDITORY,
@@ -43,12 +42,6 @@ class ScheduleController(private val activity: AppCompatActivity) {
         }
 
         ui.setupSearchButton { input -> handleSearch(input) }
-
-        ui.setupDotsClick { option ->
-            when(option) {
-                "Календарь" -> openCalendar()
-            }
-        }
 
         ui.showInfoMessage("Расписание не найдено :(")
     }
@@ -134,12 +127,5 @@ class ScheduleController(private val activity: AppCompatActivity) {
         } else {
             ui.hideInfoMessage()
         }
-    }
-
-    private fun openCalendar() {
-        val intent = android.content.Intent(activity, CalendarActivity::class.java)
-        selectedAuditory?.let { intent.putExtra("auditory", it) }
-        selectedGroup?.let { intent.putExtra("group", it) }
-        activity.startActivity(intent)
     }
 }

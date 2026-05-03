@@ -7,8 +7,8 @@ data class Lesson(
     val discipline: String,
     val teachers: List<String>,
     val groupNames: List<String>,
-    val dt: LocalDate?, //end
-    val df: LocalDate?, // start
+    val dt: LocalDate?,
+    val df: LocalDate?,
     val dts: String = "",
     val auditoryId: String = ""
 )

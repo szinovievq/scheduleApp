@@ -10,9 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.LinearLayout
-import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -41,8 +39,6 @@ class ScheduleView(private val activity: AppCompatActivity) {
 
     private val allGroups = scheduleMapper.getAllGroups()
     private val allItems = (allAuditories + allGroups).distinct().sorted()
-
-    private val btnDots: ImageButton = activity.findViewById(R.id.btnDots)
     val autoAdapter = ArrayAdapter(
         activity,
         R.layout.item_dropdown,
@@ -147,19 +143,5 @@ class ScheduleView(private val activity: AppCompatActivity) {
         val intent = Intent(activity, MapActivity::class.java)
         intent.putExtra("url", url)
         activity.startActivity(intent)
-    }
-
-    fun setupDotsClick(onOptionSelected: (String) -> Unit) {
-        btnDots.setOnClickListener { view ->
-            val popup = PopupMenu(activity, view)
-            popup.menu.add("Календарь")
-
-            popup.setOnMenuItemClickListener { menuItem ->
-                onOptionSelected(menuItem.title.toString())
-                true
-            }
-
-            popup.show()
-        }
     }
 }
